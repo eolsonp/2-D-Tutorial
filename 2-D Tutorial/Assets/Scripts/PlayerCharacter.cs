@@ -6,12 +6,31 @@ public class PlayerCharacter : MonoBehaviour
 {
     [SerializeField]
     private float accelerationForce = 5;
+
     [SerializeField]
     private float maxSpeed = 5;
+
+    [SerializeField]
+    private float jumpForce = 10;
+
     [SerializeField]
     private Rigidbody2D rb2d;
 
+    [SerializeField]
+    private Collider2D playerGroundCollider;
+
+    [SerializeField]
+    private PhysicsMaterial2D playerMovingPhysicsMaterial, playerStoppingPhysicsMaterial;
+
+    [SerializeField]
+    private Collider2D groundDetectTrigger;
+
+    [SerializeField]
+    private ContactFilter2D groundContactFilter;
+
     private float horizontalInput;
+    private bool isOnGround;
+    private Collider2D[] groundHitDetectionResults = new Collider2D[16];
 	// Use this for initialization
 	void Start ()
     {
@@ -21,14 +40,48 @@ public class PlayerCharacter : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-
-        //if(Input.GetButton())
-	}
+        UpdateIsOnGround();
+        UpdateHorizontalInput();
+        HandleJumpImput();
+    }
 
     private void FixedUpdate()
     {
+        UpdatePhysicsMaterial();
         Move();
+    }
+
+    private void UpdatePhysicsMaterial()
+    {
+        if (Mathf.Abs(horizontalInput) > 0)
+        {
+            playerGroundCollider.sharedMaterial = playerMovingPhysicsMaterial;
+
+        }
+        else
+        {
+            playerGroundCollider.sharedMaterial = playerStoppingPhysicsMaterial;
+
+        }
+    }
+
+    private void UpdateIsOnGround()
+    {
+       isOnGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetectionResults) > 0;
+       //Debug.Log("IsOnGround?: " + isOnGround);
+    }
+
+    private void UpdateHorizontalInput()
+    {
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+    }
+
+    private void HandleJumpImput()
+    {
+        if (Input.GetButtonDown("Jump")  && isOnGround)
+        {
+            rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
     }
 
     private void Move()

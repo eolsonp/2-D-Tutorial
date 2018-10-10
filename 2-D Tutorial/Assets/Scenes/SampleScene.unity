@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 174262802}
   - component: {fileID: 174262801}
   - component: {fileID: 174262800}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,8 +207,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 174262799}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.82, y: -4.62, z: 0}
-  m_LocalScale: {x: 8.914042, y: 1.3249226, z: 1}
+  m_LocalPosition: {x: 7.82, y: -4.65, z: 0}
+  m_LocalScale: {x: 8.914042, y: 1.2752379, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 1507598896}
   - component: {fileID: 1507598895}
   - component: {fileID: 1507598894}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlipperyFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,8 +380,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1507598893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.68, y: -4.6, z: 0}
-  m_LocalScale: {x: 10.487045, y: 1.3249226, z: 1}
+  m_LocalPosition: {x: -0.04, y: -4.66, z: 0}
+  m_LocalScale: {x: 6.9362035, y: 1.3249226, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 1691331116}
   - component: {fileID: 1691331115}
   - component: {fileID: 1691331114}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -480,8 +480,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1691331113}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.56, y: -4.6, z: 0}
-  m_LocalScale: {x: 24.394388, y: 1.3249226, z: 1}
+  m_LocalPosition: {x: -7.98, y: -4.67, z: 0}
+  m_LocalScale: {x: 9.147896, y: 1.3249226, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -498,6 +498,7 @@ GameObject:
   - component: {fileID: 1781391265}
   - component: {fileID: 1781391268}
   - component: {fileID: 1781391269}
+  - component: {fileID: 1781391270}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -513,7 +514,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1781391264}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 406afac77ce80cf4595b43386632a428, type: 2}
+  m_Material: {fileID: 6200000, guid: d566fbe502bea3346af00d29a631d5a4, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -582,7 +583,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1781391264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.2719784, y: -1.6254181, z: 0}
+  m_LocalPosition: {x: -1.43, y: -2.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -621,4 +622,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accelerationForce: 20
   maxSpeed: 5
+  jumpForce: 10
   rb2d: {fileID: 1781391268}
+  playerGroundCollider: {fileID: 1781391265}
+  playerMovingPhysicsMaterial: {fileID: 6200000, guid: ff46134d62f58954480ff9c79c03eb8a,
+    type: 2}
+  playerStoppingPhysicsMaterial: {fileID: 6200000, guid: d566fbe502bea3346af00d29a631d5a4,
+    type: 2}
+  groundDetectTrigger: {fileID: 1781391270}
+  groundContactFilter:
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 256
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+--- !u!58 &1781391270
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1781391264}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.27}
+  serializedVersion: 2
+  m_Radius: 0.4
