@@ -44,7 +44,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         UpdateIsOnGround();
         UpdateHorizontalInput();
-        HandleJumpImput();
+        HandleJumpInput();
     }
 
     private void FixedUpdate()
@@ -78,7 +78,7 @@ public class PlayerCharacter : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
     }
 
-    private void HandleJumpImput()
+    private void HandleJumpInput()
     {
         if (Input.GetButtonDown("Jump")  && isOnGround)
         {
