@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour {
 
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            audioSource.Play();
+
+           // Destroy(gameObject);
         }
     }
     // Use this for initialization
