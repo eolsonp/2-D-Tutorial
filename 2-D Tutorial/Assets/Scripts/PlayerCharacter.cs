@@ -31,6 +31,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private float horizontalInput;
     private bool isOnGround;
+    private bool canDoubleJump = false;
     private Collider2D[] groundHitDetectionResults = new Collider2D[16];
     private Checkpoint currentCheckpoint;
 	// Use this for initialization
@@ -51,6 +52,8 @@ public class PlayerCharacter : MonoBehaviour
     {
         UpdatePhysicsMaterial();
         Move();
+        if (isOnGround)
+            canDoubleJump = false;
     }
 
     private void UpdatePhysicsMaterial()
@@ -80,10 +83,15 @@ public class PlayerCharacter : MonoBehaviour
 
     private void HandleJumpInput()
     {
-        if (Input.GetButtonDown("Jump")  && isOnGround)
-        {
-            rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        }
+        if (Input.GetButtonDown("Jump")  && (isOnGround || !canDoubleJump))
+         {
+             rb2d.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
+            if (!canDoubleJump && !isOnGround)
+                canDoubleJump = true;
+         }
+         
+         
     }
 
     private void Move()
