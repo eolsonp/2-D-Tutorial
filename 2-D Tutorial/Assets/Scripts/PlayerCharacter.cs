@@ -25,6 +25,9 @@ public class PlayerCharacter : MonoBehaviour
     private bool isOnGround;
     private bool canDoubleJump = false;
     bool facingRight = true;
+    private Transform groundCheck;
+    private float groundRadius = 0.2f;
+    public LayerMask whatIsGround;
     private Collider2D[] groundHitDetectionResults = new Collider2D[16];
     private Checkpoint currentCheckpoint;
     Animator anim;
@@ -47,6 +50,7 @@ public class PlayerCharacter : MonoBehaviour
         Move();
         if (isOnGround)
             canDoubleJump = false;
+        anim.SetFloat("vSpeed", rb2d.velocity.y);
     }
     void Flip()
     {
@@ -69,6 +73,7 @@ public class PlayerCharacter : MonoBehaviour
     private void UpdateIsOnGround()
     {
        isOnGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetectionResults) > 0;
+        anim.SetBool("Ground", isOnGround);
        //Debug.Log("IsOnGround?: " + isOnGround);
     }
     private void UpdateHorizontalInput()
