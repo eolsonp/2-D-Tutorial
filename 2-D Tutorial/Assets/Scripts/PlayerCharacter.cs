@@ -7,37 +7,31 @@ public class PlayerCharacter : MonoBehaviour
 {
     [SerializeField]
     private float accelerationForce = 5;
-
     [SerializeField]
     private float maxSpeed = 5;
-
     [SerializeField]
     private float jumpForce = 10;
-
     [SerializeField]
     private Rigidbody2D rb2d;
-
     [SerializeField]
     private Collider2D playerGroundCollider;
-
     [SerializeField]
     private PhysicsMaterial2D playerMovingPhysicsMaterial, playerStoppingPhysicsMaterial;
-
     [SerializeField]
     private Collider2D groundDetectTrigger;
-
     [SerializeField]
     private ContactFilter2D groundContactFilter;
-
     private float horizontalInput;
     private bool isOnGround;
     private bool canDoubleJump = false;
+    bool facingRight = true;
     private Collider2D[] groundHitDetectionResults = new Collider2D[16];
     private Checkpoint currentCheckpoint;
+    Animator anim;
 	// Use this for initialization
 	void Start ()
     {
-		
+        anim = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -47,7 +41,6 @@ public class PlayerCharacter : MonoBehaviour
         UpdateHorizontalInput();
         HandleJumpInput();
     }
-
     private void FixedUpdate()
     {
         UpdatePhysicsMaterial();
@@ -55,32 +48,34 @@ public class PlayerCharacter : MonoBehaviour
         if (isOnGround)
             canDoubleJump = false;
     }
-
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
     private void UpdatePhysicsMaterial()
     {
         if (Mathf.Abs(horizontalInput) > 0)
         {
             playerGroundCollider.sharedMaterial = playerMovingPhysicsMaterial;
-
         }
         else
         {
             playerGroundCollider.sharedMaterial = playerStoppingPhysicsMaterial;
-
         }
     }
-
     private void UpdateIsOnGround()
     {
        isOnGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetectionResults) > 0;
        //Debug.Log("IsOnGround?: " + isOnGround);
     }
-
     private void UpdateHorizontalInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
+        anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
     }
-
     private void HandleJumpInput()
     {
         if (Input.GetButtonDown("Jump")  && (isOnGround || !canDoubleJump))
@@ -89,19 +84,19 @@ public class PlayerCharacter : MonoBehaviour
 
             if (!canDoubleJump && !isOnGround)
                 canDoubleJump = true;
-         }
-         
-         
+         }    
     }
-
     private void Move()
     {
         rb2d.AddForce(Vector2.right * horizontalInput * accelerationForce);
         Vector2 clampedVelocity = rb2d.velocity;
         clampedVelocity.x = Mathf.Clamp(rb2d.velocity.x, -maxSpeed, maxSpeed);
         rb2d.velocity = clampedVelocity;
+        if (horizontalInput > 0 && !facingRight)
+            Flip();
+        else if (horizontalInput < 0 && facingRight)
+            Flip();
     }
-
     public void Respawn()
     {
         if (currentCheckpoint == null)
@@ -114,7 +109,6 @@ public class PlayerCharacter : MonoBehaviour
             transform.position = currentCheckpoint.transform.position;
         }
     }
-
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
     {
         if(currentCheckpoint != null)
